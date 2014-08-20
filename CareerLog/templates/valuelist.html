@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% set active_page = valuename.lower() %}
+
+{% block page_header %}
+    <h2>{{ valuename.upper() }}</h2>
+{% endblock %}
+
+{% block content %}
+  <ul class="columns">
+
+  {% for value, count in valuelist %}
+    <li class="clearlist">
+
+      <a class="glowbutton" href={{url_for(next_endpoint, item=value)}}>{{ value }}</a>&nbsp;&nbsp;<small>{{ count }}</small>
+    </li>
+  {% endfor %}
+  </ul> 
+{% endblock %}

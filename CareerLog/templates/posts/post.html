@@ -1,0 +1,47 @@
+{% import "_forms.html" as forms %}
+{% extends "base.html" %}
+{% set active_page = "posts" %}
+{% if post.slug == 'home' %}
+  {% set active_page = 'home' %}
+{% endif %}
+
+{% block page_header %}
+    <div class='title box'>{{ post.title }}</div>
+    <div class='subtitle box'>{{ post.subtitle }}</div>
+    {% if post.modified %}
+      <div class='post-meta'>Edited {{ post.get_naturaltime('modified') }} by <strong>{{ post.author }}</strong></div>
+    {% else %}
+      <div class='post-meta'>Posted {{ post.get_naturaltime('created') }} by <strong>{{ post.author }}</strong></div>
+    {% endif %}
+    <ul class="taglist">
+    {% if post.tags %}
+      {% for item in post.tags %}
+         <li><a class="glowbutton" href="/tags/{{ item }}/" > {{ item }} </a></li>
+      {% endfor %}
+    {% endif %}
+    </ul> 
+{% endblock %}
+{% block content_footer %}
+{% endblock %}
+
+{% block content %}
+  {{ post.body|creole2html|safe }}
+  {% if post.comments_allowed %}
+    <hr>
+    <h3>Comments</h3>
+    {% if post.comments %}
+      {% for comment in post.comments %}
+         <p><small>{{ comment.get_naturaltime('created').capitalize() }}</small>, <strong>{{ comment.author }}</strong> wrote: </p>
+         <p>{{ comment.body }}</p>
+      {% endfor %}
+    {% endif %}
+
+    <hr>
+    <form action="." method="post">
+      {{ forms.render(form) }}
+      <div class="actions">
+        <input type="submit" class="btn primary" value="Add a comment">
+      </div>
+    </form>
+  {% endif %}
+{% endblock %}

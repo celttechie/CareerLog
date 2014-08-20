@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% set active_page = 'resume' %}
+
+{% block page_header %}
+    <div class='title box'>Resume of Brian Jarrett</div>
+{% endblock %}
+
+{% block content %}
+    <a class="button selected" href="#certs">Certifications</a>
+    <a class="button" href="#employment">Employment History</a>
+    <a class="button" href="#education">Education</a></li>
+  
+    <div class="section displayed" id="certs">
+  <ul class="columns">
+  {% for cert in certification %}
+    <li>
+      <h3 class="clearbox">{% if cert.cert_url %}<a href={{cert.cert_url}}>{{cert.certification}}</a>{% else %}{{cert.certification}}{% endif %}</h3>
+    {% if cert.badge_url %}<img src="{{ cert.badge_url }}" alt="{{cert.certification}}">{% endif %}    
+    <br><small>{{ cert.certified_month }}/{{ cert.certified_year }} {% if cert.expire_year %} - {{cert.expire_month }}/{{ cert.expire_year }}{% endif %}</small>
+    {{ cert.authority }}<br>
+    {{ cert.notes }}
+    </li>
+  {% endfor %}
+    </div>
+    <div class="section" id="employment">
+  {% for job in employment %}
+    <div class="clearbox">
+      <h3 class="jobtitle clearfloat">{{ job.position }}</h3>
+      <h4 class="jobdates textright">{{job.start_month}}/{{job.start_year}} - {% if job.end_year %}{{ job.end_month}}/{{job.end_year}}{% else %} Present {% endif %}</h4>
+      <h4 class="employer clearfloat">{{ job.employer }}</h4>
+      <h5 class="joblocation textright">{{ job.location }}</h5>
+    </div>
+    <div class="clearfloat justify">
+      {{ job.body }}
+    </div>
+  {% endfor %}
+    </div>
+    <div class="section" id="education">
+      {% for school in education %}
+	<h3>{{ school.fieldofstudy}}</h3>
+	<h4 class="clearbox indent"> {{ school.institution }}</h4>
+	<h4 class="clearbox indent">{{ school.start_year}} - {{school.end_year}} <small>{{ school.location }}</small></h4>
+      {% endfor %}
+    </div>
+{% endblock %}

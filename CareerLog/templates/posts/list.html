@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% set active_page = "posts" %}
+
+{% block page_header %}
+    <div class="title box">{{ listtitle }}</div>
+{% endblock %}
+
+{% block content %}
+  {% for post in latest %}
+  <h3><a href={{url_for('post', slug=post.slug)}}>{{ post.title }}</a> 
+    <small>{{ post.get_naturaltime('created') }}</small>
+  </h3>
+    <p class='indent'>{{ post.body|creole2html|safe|excerpt }}<p>
+    <hr>
+  {% endfor %} 
+{% endblock %}
